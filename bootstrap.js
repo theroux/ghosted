@@ -9,16 +9,6 @@ chrome.tabs.onUpdated.addListener(function(id, info, tab){
 
     if (tab.url.toLowerCase().indexOf("facebook.com") > -1){
         chrome.pageAction.show(tab.id);
-
-        /*
-        chrome.storage.sync.get("status_pref", function(data){
-            if (data["status_pref"] && tab.url.toLowerCase().indexOf("facebook.com/buzzfeed") !== -1){
-                chrome.tabs.update(tab.id, {url: "http://www.facebook.com/?no-buzzfeed-for-you!"});
-            }
-        });
-        */
     }
 
 });
-
-console.log('bootstrap.js');
