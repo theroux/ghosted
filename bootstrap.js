@@ -1,7 +1,8 @@
 // when the extension is first installed
 chrome.runtime.onInstalled.addListener(function(details) {
-    chrome.storage.sync.set({"muted_people": null});
+    chrome.storage.sync.set({"muted_list": null});
     chrome.storage.sync.set({ "status_pref": true});
+    chrome.storage.sync.set({ "transparency": "medium"});
 });
 
  // listen for any changes to the URL of any tab.

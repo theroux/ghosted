@@ -1,7 +1,6 @@
 var killed_comments = [];
 var storyContainerClasses = ["_5jmm"];
 var commentClasses = ["UFIComment"];
-var bannedDomains = ["facebook.com/buzzfeed", "bzfd.it", "buzzfeed.com"];
 var somevar;
 
 function getMutedList(value) {
@@ -14,13 +13,19 @@ function getMutedList(value) {
   });
 }
 
+function getTransparency(value) {
+  chrome.storage.sync.get("transparency", function (data) {
+    var level = null;
+    if (data["transparency"]) { 
+      level = data["transparency"];
+      value(level);
+    } 
+  });
+}
+
 /* getMutedList( function(idk) {
   console.log(idk);
 }); */
-
-
-var DEBUG = false;
-var DEBUG_DOMAIN = "athletics.bowdoin.edu";
 
 function ghost() {
   chrome.storage.sync.get("status_pref", function(data){
@@ -37,12 +42,17 @@ function ghost() {
 }
 
 function removeUrlParams(profileUrl) {
-  var trimmedUrl = profileUrl.split('?')[0];
-  return trimmedUrl;
-}
+  var pretrimmedUrl, trimmedUrl;
+  if (profileUrl.indexOf('profile.php') > -1 ) {
+    // this is a non-vanity URL
+    pretrimmedUrl = profileUrl.split('?id=')[1];
+    trimmedUrl = pretrimmedUrl.split('&')[0];
+  } else {
+    // this is a vanity URL
+    pretrimmedUrl = profileUrl.split('?')[0];
+    trimmedUrl = pretrimmedUrl.split('facebook.com/')[1];
 
-function stripHttp(profileUrl) {
-  var trimmedUrl = profileUrl.split('facebook.com/')[1];
+  }
   return trimmedUrl;
 }
 
@@ -51,47 +61,67 @@ function ghostkillLinks(item){
   _.each(imageLinks, function(link){
     var href = link.href.toLowerCase();
     href = removeUrlParams(href);
-    href = stripHttp(href);
     //console.log(href);
-    getMutedList( function(bannedName) {
-         _.each(bannedName, function(profileUrl){
+    getMutedList( function(bannedPerson) {
+         _.each(bannedPerson, function(profileUrl){
+          //console.log(profileUrl[0]);
             // can't use indexOf in case a shorter name is contained in a longer name
             // ie Kim John --> Kim Johnson
-            if ( (href == profileUrl) || (DEBUG && href.indexOf(DEBUG_DOMAIN) !== -1)){
+            if (href == profileUrl[0]) {
               ghostkillItem(item);
             }
-          /* if (href.indexOf(profileUrl) !== -1 || (DEBUG && href.indexOf(DEBUG_DOMAIN) !== -1)){
-            ghostkillItem(item);
-          } */
       });
     });
-   
-
   });
 }
 
 function ghostkillItem(item){
+  getTransparency( function(level) {
+    //console.log(level)
+    var opacityLevel;
+    if (level === "low") { 
+      opacityLevel = "0.5";
+    } else if (level === "medium") {
+      opacityLevel = "0.25";
+    } else if (level === "high") {
+      opacityLevel = "0.1";
+    } else if (level === "full") {
+      opacityLevel = "0";
+    }
 
-  // set the story to be invisible
-  if (DEBUG){
-    item.style.opacity = "0.5";
-  } else {
-    item.style.opacity = "0.2";
-    //item.style.display = "None";
-  }
+    // set the comment to be invisible
+    item.style.opacity = opacityLevel;
+  });   
 
   // add this story to the list of killed stories
   if (killed_comments.indexOf(item) == -1){
-    if (DEBUG){
-      console.log("killed a link");
-    }
     killed_comments.push(item);
   }
-
 }
 
 ghost();
 
 // debounce the function so it's not running constantly
-var scrollGhost = _.debounce(ghost, 50);
+var scrollGhost = _.debounce(ghost, 100);
 document.addEventListener("scroll", scrollGhost);
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  // When new profiles are added to list, or transparency level is changed, re-run ghost function
+  for (key in changes) {
+    if ((key === "transparency") || (key === "muted_list")) {
+      ghost();
+    }
+  }
+
+  //Debug helper
+  /*
+  for (key in changes) {
+    var storageChange = changes[key];
+    console.log('Storage key "%s" in namespace "%s" changed. ' +
+                'Old value was "%s", new value is "%s".',
+                key,
+                namespace,
+                storageChange.oldValue,
+                storageChange.newValue);
+  } */
+});

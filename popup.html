@@ -7,7 +7,10 @@
     <body>
         <div>
         	<h1>Ghosted</h1>
-            <h3>Muted List:</h3>
+            <div id="list-heading">
+                <h3>Muted List:</h3>                
+                <button id="reset">Reset List</button>
+            </div>
             <span id="no-mutes">No one muted&hellip; yet</span>
         	<ul id="mute-list">
         		
@@ -15,17 +18,29 @@
         	<hr/>
             <form id="mute-form" action="" method="">
                
-                	<label>Name:</label>
+                	<label>Profile URL</label>
                     <input type="text" id="mute-person" name="mute-person" class="mute-person" placeholder="Profile URL" /> 
                 
                 <input id="submit-form" type="submit" value="Add to Mute List" />
             </form>
+            </div>
+            <hr />
+            <div class="transparency">
+                <h3>Transparency</h3>
+                <select id="transparency-selector" name="transparency">
+                    <option value="low">50%</option>
+                    <option value="medium">75%</option>
+                    <option value="high">90%</option>
+                    <option value="full">100% (invisible)</option>
+                </select>
+            </div>
             <hr />
             <form id="status-flag-form" action="" method="">
-            	<input id="status-flag" type="checkbox" name="state"> <label for="state">Extension enabled</label>
+            	<input id="status-flag" type="checkbox" name="state"> <label for="state">Extension enabled (Requires page reload)</label>
             </form>
             
         </div>
+        <script src="libs/underscore.min.js"></script>
         <script src="settings.js"></script>
     </body>
 </html>
