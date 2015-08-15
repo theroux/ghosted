@@ -1,8 +1,16 @@
-var killed_comments = [];
-var storyContainerClasses = ["_5jmm"];
-var commentClasses = ["UFIComment"];
-var somevar;
-
+var killed_containers = [],
+  structure = {
+    stories : {
+      containerClasses : ["_5jmm"],
+      imageLinkClasses : [ "_5v9u"]
+    },
+    comments : {
+      containerClasses : ["UFIComment"],
+      imageLinkClasses : ["UFIImageBlockImage"]
+    }
+  };
+  
+  
 function getMutedList(value) {
   chrome.storage.sync.get("muted_list", function (data) {
     var bannedPersons = null;
@@ -22,7 +30,7 @@ function getTransparency(value) {
     } 
   });
 }
-
+// Pattern for fetching async values
 /* getMutedList( function(idk) {
   console.log(idk);
 }); */
@@ -30,13 +38,18 @@ function getTransparency(value) {
 function ghost() {
   chrome.storage.sync.get("status_pref", function(data){
     if (data["status_pref"]){
-      // find all potential posts
-      _.each(commentClasses, function(commentClass){
-        posts = document.getElementsByClassName(commentClass);
-        _.each(posts, function(post){
-          ghostkillLinks(post);
+      _.each(structure, function(contentType) {
+        // find all potential posts
+        var containerClasses = contentType.containerClasses,
+            imageLinkClasses = contentType.imageLinkClasses;
+        _.each(containerClasses, function(containerClass){
+          posts = document.getElementsByClassName(containerClass);
+          _.each(posts, function(post){
+            ghostkillLinks(post, imageLinkClasses);
+          });
         });
       });
+      
     }
   });
 }
@@ -56,21 +69,27 @@ function removeUrlParams(profileUrl) {
   return trimmedUrl;
 }
 
-function ghostkillLinks(item){
-  var imageLinks = item.getElementsByClassName("UFIImageBlockImage");
-  _.each(imageLinks, function(link){
-    var href = link.href.toLowerCase();
-    href = removeUrlParams(href);
-    //console.log(href);
-    getMutedList( function(bannedPerson) {
-         _.each(bannedPerson, function(profileUrl){
-          //console.log(profileUrl[0]);
-            // can't use indexOf in case a shorter name is contained in a longer name
-            // ie Kim John --> Kim Johnson
-            if (href == profileUrl[0]) {
-              ghostkillItem(item);
-            }
-      });
+function ghostkillLinks(item, imageLinkClasses){
+  _.each(imageLinkClasses, function(imageLinkClass) { 
+    var imageLinks = item.getElementsByClassName(imageLinkClass);
+    // console.log(imageLinks);
+    _.each(imageLinks, function(link){
+      
+      if (link.href) {
+        var href = link.href.toLowerCase();
+        href = removeUrlParams(href);
+        //console.log(href);
+        getMutedList( function(bannedPerson) {
+          _.each(bannedPerson, function(profileUrl){
+            //console.log(profileUrl[0]);
+              // can't use indexOf in case a shorter name is contained in a longer name
+              // ie Kim John --> Kim Johnson
+              if (href == profileUrl[0]) {
+                ghostkillItem(item);
+              }
+          });
+        });
+      }
     });
   });
 }
@@ -94,8 +113,8 @@ function ghostkillItem(item){
   });   
 
   // add this story to the list of killed stories
-  if (killed_comments.indexOf(item) == -1){
-    killed_comments.push(item);
+  if (killed_containers.indexOf(item) == -1){
+    killed_containers.push(item);
   }
 }
 
