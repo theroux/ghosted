@@ -5,24 +5,26 @@
     </head>
 
     <body>
-        <div>
+        <div id="wrapper">
+            <svg id="logo" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 433.05 433.05"><path fill="#fff" stroke="#3B5998" stroke-width="15" d="M416.054 428.787l-49.883-59.84-49.885 59.84-49.883-59.84-49.879 59.84-49.883-59.84-49.882 59.84-49.882-59.84-49.882 59.84c-70.47-566.033 469.53-566.033 399.059 0z"/></svg>
         	<h1>Ghosted</h1>
-            <div id="list-heading">
-                <h3>Muted List:</h3>                
-                <button id="reset">Reset List</button>
-            </div>
-            <span id="no-mutes">No one muted&hellip; yet</span>
-        	<ul id="mute-list">
-        		
-        	</ul>
-        	<hr/>
-            <form id="mute-form" action="" method="">
-               
-                	<label>Profile URL</label>
+            <hr />
+            <div id="list">
+                <div id="list-heading">
+                    <h3>Muted List:</h3>                
+                    <button id="reset">Reset List</button>
+                </div>
+                <span id="no-mutes">No one muted&hellip; yet</span>
+            	<ul id="mute-list">
+            		
+            	</ul>
+                <form id="mute-form" action="" method="">
+                   
+                    <label>Profile URL</label>
                     <input type="text" id="mute-person" name="mute-person" class="mute-person" placeholder="Profile URL" /> 
-                
-                <input id="submit-form" type="submit" value="Add to Mute List" />
-            </form>
+                    
+                    <input id="submit-form" type="submit" value="Add to Mute List" />
+                </form>
             </div>
             <hr />
             <div class="transparency">
@@ -36,7 +38,7 @@
             </div>
             <hr />
             <form id="status-flag-form" action="" method="">
-            	<input id="status-flag" type="checkbox" name="state"> <label for="state">Extension enabled (Requires page reload)</label>
+            	<input id="status-flag" type="checkbox" name="state"> <label for="state">Extension enabled (Disabling requires page reload)</label>
             </form>
             
         </div>

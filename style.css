@@ -7,10 +7,26 @@ body {
 	margin: 0;
 	padding: 1em;
 }
+#wrapper {
 
+}
+#logo {
+	float: left;
+	height: 3em;
+	line-height: 3em;
+	margin-right: 0.5em;
+	display: inline;
+}
 h1 {
+	color: #3B5998;
+   	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 	font-size: 1.5em;
+	font-weight: normal;
+	line-height: 2em;
 	margin-top: 0;
+}
+
+#list {
 }
 #list-heading {
 	margin: 1em 0;
@@ -19,6 +35,8 @@ h1 {
 h3 {
 	float: left;
 	margin: 0;
+	text-transform: lowercase;
+	font-variant: small-caps;
 }
 #reset {
 	float: right;
@@ -33,12 +51,18 @@ li {
 	margin: 0.5em 0;
 }
 hr {
+	background: linear-gradient(90deg, #3B5998, transparent);
+	border: 0;
 	clear: both;
+	height: 1px;
 	margin: 1em 0;
 }
 fieldset {
 	border: none;
 	padding: 0;
+}
+#mute-form {
+	margin: 1em 0;
 }
 #mute-form label {
 	display: none;
