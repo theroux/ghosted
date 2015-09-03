@@ -4,11 +4,12 @@ document.addEventListener('DOMContentLoaded', function(){
 
     var input = document.getElementById('mute-person'),
       submitForm = document.getElementById('submit-form'),
-      flag = document.getElementById('status-flag'),
       list = document.getElementById('mute-list'),
       emptyMsg = document.getElementById('no-mutes'),
       reset = document.getElementById('reset'),
-      selectTransparency = document.getElementById('transparency-selector');
+      radioTransparency = document.getElementsByName('transparencylevel');
+
+      console.log(radioTransparency);
 
     function removeNamefromData(name) {
       console.log('name 1: ' + name );
@@ -54,12 +55,18 @@ document.addEventListener('DOMContentLoaded', function(){
     function listName(profile) {
 			var listItem = document.createElement("li"),
         button = document.createElement("button"),
-        buttonText = document.createTextNode('Remove'),
+        buttonSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
+        buttonArt = document.createElementNS("http://www.w3.org/2000/svg","path"),
         text = document.createTextNode(profile[0]),
         profileLink = document.createElement("a"),
         urlType = profile[1];
 
-      button.appendChild(buttonText);
+      button.appendChild(buttonSvg);
+      buttonSvg.setAttributeNS(null, "width", "11");
+      buttonSvg.setAttributeNS(null, "height", "10")
+      buttonSvg.appendChild(buttonArt);
+      buttonArt.setAttributeNS(null, "d", "M7.691 1.712l-2.19 2.19-2.19-2.19c-.112-.112-.289-.115-.401-.004l-1.194 1.194c-.111.112-.108.288.004.401l2.19 2.19-2.19 2.19c-.111.112-.115.29-.004.402l1.194 1.193c.111.112.289.109.401-.003l2.19-2.191 2.19 2.19c.114.113.288.113.399.001l1.193-1.193c.111-.112.111-.286 0-.398l-2.189-2.19 2.189-2.19c.111-.112.111-.286 0-.398l-1.193-1.194c-.111-.112-.285-.112-.399 0z");  
+
       button.classList.add('remove');
       listItem.appendChild(profileLink);
 			profileLink.appendChild(text);
@@ -102,37 +109,30 @@ document.addEventListener('DOMContentLoaded', function(){
       return [trimmedUrl, urlType];
     }
 
-    // set the initial state of the checkbox
-    chrome.storage.sync.get("status_pref", function(data){
-      if (data["status_pref"]){
-        flag.checked = true;
-      } else {
-        flag.checked = false;
-      }
-    });
 
     // set the initial transparency level
     chrome.storage.sync.get("transparency", function(data){
       if (data["transparency"]){
-        console.log(data["transparency"]);
-        selectTransparency.value = data["transparency"];
+        console.log('initial get ' + data["transparency"]);
+        var activeRadio = document.getElementById(data["transparency"]);
+        activeRadio.checked = true;
       } else {
-        console.log(data["transparency"]);
-        selectTransparency.value = "medium";
+        console.log('blank ' + data["transparency"]);
+        var defaultRadio = document.getElementById("medium");
+        defaultRadio.checked = true;
         console.log(data["transparency"]);
       }
     });
 
-    // Listens for unchecking/checking the checkbox
-    flag.addEventListener("change", function(){
-      chrome.storage.sync.set({ "status_pref": flag.checked});
-      console.log('flag changed');
-    });
-
     // Listens for changing the transparency level
-    selectTransparency.addEventListener("change", function(){
-      chrome.storage.sync.set({ "transparency": selectTransparency.value});
-      console.log('transparency');
+    [].forEach.call(radioTransparency, function(radio) {
+        radio.addEventListener("change", function(){
+          if (radio.checked === true) {
+            chrome.storage.sync.set({ "transparency": radio.value});
+            console.log('transparency: ' + radio.value);
+          }
+          
+        });
     });
 
     // set the initial state of the list of muted names

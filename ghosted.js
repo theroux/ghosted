@@ -36,22 +36,17 @@ function getTransparency(value) {
 }); */
 
 function ghost() {
-  chrome.storage.sync.get("status_pref", function(data){
-    if (data["status_pref"]){
-      _.each(structure, function(contentType) {
-        // find all potential posts
-        var containerClasses = contentType.containerClasses,
-            imageLinkClasses = contentType.imageLinkClasses;
-        _.each(containerClasses, function(containerClass){
-          posts = document.getElementsByClassName(containerClass);
-          _.each(posts, function(post){
-            ghostkillLinks(post, imageLinkClasses);
-          });
+    _.each(structure, function(contentType) {
+      // find all potential posts
+      var containerClasses = contentType.containerClasses,
+          imageLinkClasses = contentType.imageLinkClasses;
+      _.each(containerClasses, function(containerClass){
+        posts = document.getElementsByClassName(containerClass);
+        _.each(posts, function(post){
+          ghostkillLinks(post, imageLinkClasses);
         });
       });
-      
-    }
-  });
+    });
 }
 
 function removeUrlParams(profileUrl) {
@@ -84,7 +79,7 @@ function ghostkillLinks(item, imageLinkClasses){
             //console.log(profileUrl[0]);
               // can't use indexOf in case a shorter name is contained in a longer name
               // ie Kim John --> Kim Johnson
-              if (href == profileUrl[0]) {
+              if (href == profileUrl[0].toLowerCase() ) {
                 ghostkillItem(item);
               }
           });
@@ -98,13 +93,13 @@ function ghostkillItem(item){
   getTransparency( function(level) {
     //console.log(level)
     var opacityLevel;
-    if (level === "low") { 
-      opacityLevel = "0.5";
-    } else if (level === "medium") {
+    if (level === "off") { 
+      opacityLevel = "1";
+    } else if (level === "low") {
       opacityLevel = "0.25";
-    } else if (level === "high") {
+    } else if (level === "medium") {
       opacityLevel = "0.1";
-    } else if (level === "full") {
+    } else if (level === "high") {
       opacityLevel = "0";
     }
 

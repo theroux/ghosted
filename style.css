@@ -1,92 +1,179 @@
+* {
+	box-sizing: border-box;
+}
 html {
 	min-width: 20em;
 }
 
 body {
-	font-family: HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
 	margin: 0;
-	padding: 1em;
+	padding: 0;
 }
 #wrapper {
 
 }
+#header {
+	overflow: auto;
+	padding: 1em;
+}
 #logo {
 	float: left;
-	height: 3em;
-	line-height: 3em;
-	margin-right: 0.5em;
 	display: inline;
 }
-h1 {
-	color: #3B5998;
-   	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
-	font-size: 1.5em;
-	font-weight: normal;
-	line-height: 2em;
-	margin-top: 0;
+#reset {
+	background: #ee6464;
+	border: 1px solid #ee6464;
+	border-radius: 3px;
+	clear: right;
+	color: #ffffff;
+	font-size: 10px;
+	float: right;
+	padding: 0.5em 1em;
+	text-transform: uppercase;
 }
+#reset:hover {
+	background: #f83333;
+	border: 1px solid #f83333;
+}
+#reset:active {
+	background: #ee6464;
+	border: 1px solid #f83333;
 
+}
 #list {
+	clear: both;
 }
 #list-heading {
-	margin: 1em 0;
 	overflow: auto;
+	text-align: center;
 }
-h3 {
-	float: left;
-	margin: 0;
-	text-transform: lowercase;
-	font-variant: small-caps;
+#list-heading h3 {
+	color: #a1a1a1;
+	font-size: 10px;
+	font-weight: normal;
+	margin: 0.25em 0;
 }
-#reset {
-	float: right;
+#no-mutes {
+	background: #eeeeee;
+	color: #a1a1a1;
+	width: 100%;
+	padding: 0.5em 0;
+	text-align: center;
 }
-ul {
+#mute-list {
 	clear: both;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
-li {
-	margin: 0.5em 0;
+#mute-list li {
+	padding: 0.5em 1em;
 }
-hr {
-	background: linear-gradient(90deg, #3B5998, transparent);
+#mute-list li:nth-child(odd) {
+	background: #eeeeee;
+}
+#mute-list li:nth-child(even) {
+	background: #fffdfd;
+}
+#mute-list li a {
+	color: #a1a1a1;
+	text-decoration: none;
+}
+#mute-list li a:hover {
+	color: #333;
+	text-decoration: underline;
+}
+button.remove {
+	background: transparent;
 	border: 0;
-	clear: both;
-	height: 1px;
-	margin: 1em 0;
-}
-fieldset {
-	border: none;
-	padding: 0;
+	cursor: pointer;
 }
 #mute-form {
-	margin: 1em 0;
+	padding: 0.5em 1em;
 }
 #mute-form label {
 	display: none;
+}
+#mute-person {
+
 }
 button.remove {
 	float: right;
 	margin-left: 1em;
 }
-
 .hide {
 	display: none;
 }
-
 #submit-form {
+	background: transparent;
+	border: 0;
+	cursor: pointer;
 	float: right;
+}
+hr {
+	background: #eeeeee;
+	border: 0;
+	height: 1px;
 }
 #status-flag-form {
-	margin-top: 1em;
+	padding: 0 1em;
+	color: #a1a1a1;
 }
-.transparency {
+#transparency {
 	clear: both;
 	display: table;
+	padding: 0 1em 1em 1em;
 	width: 100%;
 }
-select {
-	float: right;
+#transparency h3 {
+	color: #a1a1a1;
+	font-size: 13px;
+	font-weight: normal;
+	text-align: center;
+}
+.transparency-option {
+	border: 1px solid #d9d9d9;
+	border-left: 0;
+	float: left;
+	position: relative;
+	text-align: center;
+	width: 25%;
+}
+.transparency-option:first-child {
+	border-left: 1px solid #d9d9d9;
+}
+.transparency-option label {
+	background-color: #eeeeee;
+	cursor: pointer;
+	display: block;
+	padding: 0.5em;
+}
+.transparency-option input {
+	display: none;
+}
+.transparency-option.off svg {
+	fill: rgba(0,0,0,1);
+	stroke: rgba(0,0,0,1);
+}
+.transparency-option.low svg {
+	fill: rgba(0,0,0,0.5);
+	stroke: rgba(0,0,0,0.5);
+
+}
+.transparency-option.medium svg {
+	fill: rgba(0,0,0,0.25);
+	stroke: rgba(0,0,0,0.25);
+}
+.transparency-option.high svg {
+	fill: rgba(0,0,0,0);
+	stroke: rgba(0,0,0,0.25);
+}
+
+.transparency-option input[type="radio"]:checked + label {
+	background-color: #5d80f2;
+}
+.transparency-option input[type="radio"]:checked + label svg {
+	stroke: #ffffff;
 }
