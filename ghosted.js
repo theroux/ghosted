@@ -2,7 +2,7 @@ var killed_containers = [],
   structure = {
     stories : {
       containerClasses : ["_5jmm"],
-      imageLinkClasses : [ "_5v9u"]
+      imageLinkClasses : [ "_5v9u", "_5pb8"]
     },
     comments : {
       containerClasses : ["UFIComment"],
